@@ -71,7 +71,7 @@ uses
  {$ENDIF MACOS}
   Classes;
 
-{$DEFINE USEWMI}
+{.$DEFINE USEWMI}
 
 type
   // TODO :
