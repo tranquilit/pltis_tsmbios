@@ -4120,7 +4120,7 @@ begin
     LStart := LPatternAddr^;
     i := NativeUInt(@ABuffer[Offset]);
     //Allow to compile on old Delphi versions,  (avoid internal compiler error)
-    MaxBuffer := {$IFDEF CPUX64}NativeUInt(@ABuffer[LMax]) {$ELSE} Integer(@ABuffer[LMax]); {$ENDIF};
+    MaxBuffer := {$IFDEF CPUX64}NativeUInt(@ABuffer[LMax]) {$ELSE}Cardinal(@ABuffer[LMax]); {$ENDIF};
     while  i <= MaxBuffer  do
     begin
       if (PByte(i)^ = LStart) then
@@ -4135,7 +4135,7 @@ begin
 
         if Found then
         begin
-          Result  := (i - {$IFDEF CPUX64}NativeUInt(@ABuffer[0]){$ELSE}Integer(@ABuffer[0]){$ENDIF});
+          Result  := (i - {$IFDEF CPUX64}NativeUInt(@ABuffer[0]){$ELSE}Cardinal(@ABuffer[0]){$ENDIF});
           Exit;
         end;
       end;
@@ -4694,6 +4694,7 @@ Var
   Header: TSmBiosTableHeader;
   Entry: TSMBiosTableEntry;
 begin
+  result := Nil;
   i := GetSMBiosTablesCount();
   SetLength(Result, i);
   i := 0;
@@ -4954,6 +4955,7 @@ begin
 {$ENDIF}
   if Assigned(GetSystemFirmwareTable) then
   begin
+    BufferSize := 0;
     BufferSize := GetSystemFirmwareTable(FirmwareTableProviderSignature, 0, nil^, BufferSize);
     if BufferSize > 0 then
     begin
